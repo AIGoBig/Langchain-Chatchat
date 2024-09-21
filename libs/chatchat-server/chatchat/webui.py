@@ -45,18 +45,18 @@ if __name__ == "__main__":
     )
 
     with st.sidebar:
-        st.image(
-            get_img_base64("logo-long-chatchat-trans-v2.png"), use_column_width=True
-        )
-        st.caption(
-            f"""<p align="right">当前版本：{__version__}</p>""",
-            unsafe_allow_html=True,
-        )
+        # st.image(
+        #     get_img_base64("logo-long-chatchat-trans-v2.png"), use_column_width=True
+        # )
+        # st.caption(
+        #     f"""<p align="right">当前版本：{__version__}</p>""",
+        #     unsafe_allow_html=True,
+        # )
 
         selected_page = sac.menu(
             [
-                sac.MenuItem("多功能对话", icon="chat"),
-                sac.MenuItem("RAG 对话", icon="database"),
+                sac.MenuItem("Agent对话", icon="chat"),
+                sac.MenuItem("RAG智能问答", icon="database"),
                 sac.MenuItem("知识库管理", icon="hdd-stack"),
             ],
             key="selected_page",
