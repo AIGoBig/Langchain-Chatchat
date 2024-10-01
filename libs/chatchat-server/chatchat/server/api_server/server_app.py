@@ -20,7 +20,7 @@ from chatchat.server.utils import MakeFastAPIOffline
 
 
 def create_app(run_mode: str = None):
-    app = FastAPI(title="Langchain-Chatchat API Server", version=__version__)
+    app = FastAPI(title="eCodeAI API Server", version=__version__)
     MakeFastAPIOffline(app)
     # Add CORS middleware to allow all origins
     # 在config.py中设置OPEN_DOMAIN=True，允许跨域
@@ -79,9 +79,9 @@ app = create_app()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        prog="langchain-ChatGLM",
-        description="About langchain-ChatGLM, local knowledge based ChatGLM with langchain"
-        " ｜ 基于本地知识库的 ChatGLM 问答",
+        prog="eCodeAI",
+        description="About eCodeAI, local knowledge based with langchain"
+        " ｜ 基于本地知识库的大模型问答",
     )
     parser.add_argument("--host", type=str, default="0.0.0.0")
     parser.add_argument("--port", type=int, default=7861)

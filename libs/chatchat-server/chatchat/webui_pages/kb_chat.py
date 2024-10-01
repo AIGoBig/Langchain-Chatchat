@@ -17,7 +17,9 @@ from chatchat.webui_pages.dialogue.dialogue import (save_session, restore_sessio
 from chatchat.webui_pages.utils import *
 
 
-chat_box = ChatBox(assistant_avatar=get_img_base64("chatchat_icon_blue_square_v2.png"))
+# chat_box = ChatBox(assistant_avatar=get_img_base64("chatchat_icon_blue_square_v2.png"))
+chat_box = ChatBox(assistant_avatar=get_img_base64("chatchat_icon_blue_square_v2.png"),
+                   user_avatar=get_img_base64("icon-chats.png"))
 
 
 def init_widgets():
@@ -40,6 +42,14 @@ def kb_chat(api: ApiRequest):
     ctx.setdefault("llm_model", get_default_llm())
     ctx.setdefault("temperature", Settings.model_settings.TEMPERATURE)
     init_widgets()
+
+    AI_NAME = "易扣AI助手"
+    AI_WECHAT = "eCodeAI"
+    with st.chat_message(name="assistant", avatar=get_img_base64("chatchat_icon_blue_square_v2.png")):
+        w_text = f"""👋Hello，我是{AI_NAME}，请在对话框中告诉我您的需求或问题，我们开始吧！ \n(问题反馈或帮助请添加`WeChat`: `{AI_WECHAT}`)"""
+        st.write(w_text)
+        # TODO 在此加入能力图。
+        # st.line_chart(np.random.randn(30, 3))
 
     # sac on_change callbacks not working since st>=1.34
     if st.session_state.cur_conv_name != st.session_state.last_conv_name:

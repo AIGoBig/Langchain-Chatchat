@@ -23,8 +23,9 @@ from chatchat.server.knowledge_base.utils import format_reference
 from chatchat.server.utils import MsgType, get_config_models, get_config_platforms, get_default_llm
 from chatchat.webui_pages.utils import *
 
-
-chat_box = ChatBox(assistant_avatar=get_img_base64("chatchat_icon_blue_square_v2.png"))
+# chat_box = ChatBox(assistant_avatar=get_img_base64("chatchat_icon_blue_square_v2.png"))
+chat_box = ChatBox(assistant_avatar=get_img_base64("chatchat_icon_blue_square_v2.png"),
+                   user_avatar=get_img_base64("icon-chats.png"))
 
 
 def save_session(conv_name: str = None):
@@ -158,6 +159,14 @@ def dialogue_page(
     st.session_state.setdefault("cur_conv_name", chat_box.cur_chat_name)
     st.session_state.setdefault("last_conv_name", chat_box.cur_chat_name)
 
+    AI_NAME = "易扣AI助手"
+    AI_WECHAT = "eCodeAI"
+    with st.chat_message(name="assistant", avatar=get_img_base64("chatchat_icon_blue_square_v2.png")):
+        w_text = f"""👋Hello，我是{AI_NAME}，请在对话框中告诉我您的需求或问题，我们开始吧！ \n(问题反馈或帮助请添加`WeChat`: `{AI_WECHAT}`)"""
+        st.write(w_text)
+        # TODO 在此加入能力图。
+        # st.line_chart(np.random.randn(30, 3))
+
     # sac on_change callbacks not working since st>=1.34
     if st.session_state.cur_conv_name != st.session_state.last_conv_name:
         save_session(st.session_state.last_conv_name)
@@ -200,7 +209,7 @@ def dialogue_page(
             rerun()
 
     with st.sidebar:
-        tab1, tab2 = st.tabs(["工具设置", "会话设置"])
+        tab1, tab2 = st.tabs(["Agent设置", "会话设置"])
 
         with tab1:
             use_agent = st.checkbox(
@@ -278,7 +287,7 @@ def dialogue_page(
                                             accept_multiple_files=False,
                                             key="upload_image",
                                             on_change=on_upload_file_change)
-            paste_image = paste_image_button("黏贴图像", key="paste_image")
+            paste_image = paste_image_button("粘贴图像", key="paste_image")
             cur_image = st.session_state.get("cur_image", (None, None))
             if cur_image[1] is None and paste_image.image_data is not None:
                 name = hashlib.md5(paste_image.image_data.tobytes()).hexdigest()+".png"
@@ -393,7 +402,7 @@ def dialogue_page(
                     unsafe_allow_html=True,
                 )
 
-        chat_box.ai_say("正在思考...")
+        chat_box.ai_say(f"{AI_NAME}正在思考...")
         text = ""
         started = False
 
