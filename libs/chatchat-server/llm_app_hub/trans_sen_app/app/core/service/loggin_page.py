@@ -48,23 +48,6 @@ def login_page():
 
 
 if __name__ == "__main__":
-    is_lite = "lite" in sys.argv  # TODO: remove lite mode
-
-    st.set_page_config(
-        "Chat.eCodeAI",
-        get_img_base64("chatchat_icon_blue_square_v2.png"),
-        initial_sidebar_state="expanded",
-        menu_items={
-            # "Get Help": "https://github.com/chatchat-space/Langchain-Chatchat",
-            # "Report a bug": "https://github.com/chatchat-space/Langchain-Chatchat/issues",
-            # "About": f"""欢迎使用 Langchain-Chatchat WebUI {__version__}！""",
-            "Get Help": "http://www.ecode.cc",
-            # "Get Help": "wechat: eCodeAI",
-            "About": f"""欢迎使用 chat.eCodeAI.com, WeChat: eCodeAI""",
-        },
-        layout="centered",
-    )
-
     if not st.session_state.logged_in:
         # 如果用户未登录，则显示登录页面
         login_page()
@@ -97,10 +80,10 @@ if __name__ == "__main__":
 
             selected_page = sac.menu(
                 [
-                    sac.MenuItem("LLM Agent 对话", icon="chat"),
-                    sac.MenuItem("LLM RAG 问答", icon="database"),
-                    # sac.MenuItem("LLM APP 对话", icon="app"),
-                    sac.MenuItem("LLM APP 批处理", icon="app"),
+                    sac.MenuItem("APP Agent 批处理", icon="app"),
+                    sac.MenuItem("RAG LLM 问答", icon="database"),
+                    sac.MenuItem("Tool Agent 对话", icon="chat"),
+                    sac.MenuItem("APP Agent 应用", icon="app"),
                     sac.MenuItem("知识库管理", icon="hdd-stack"),
                 ],
                 key="selected_page",
@@ -111,11 +94,11 @@ if __name__ == "__main__":
 
         if selected_page == "知识库管理":
             knowledge_base_page(api=api, is_lite=is_lite)
-        elif selected_page == "LLM RAG 问答":
+        elif selected_page == "RAG LLM 问答":
             kb_chat(api=api)
-        elif selected_page == "LLM APP 对话":
+        elif selected_page == "APP Agent 应用":
             agent_app_chat(api=api)
-        elif selected_page == "LLM APP 批处理":
+        elif selected_page == "APP Agent 批处理":
             agent_app_batch(api=api)
-        elif selected_page == "LLM Agent 对话":
+        elif selected_page == "Tool Agent 对话":
             dialogue_page(api=api, is_lite=is_lite)

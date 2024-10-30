@@ -9,7 +9,6 @@ from streamlit_chatbox import *
 from streamlit_extras.bottom_container import bottom
 
 from chatchat.settings import Settings
-from chatchat.server.knowledge_base.utils import LOADER_DICT
 from chatchat.server.utils import get_config_models, get_config_platforms, get_default_llm, api_address
 from chatchat.webui_pages.dialogue.dialogue import (save_session, restore_session, rerun,
                                                     get_messages_history, upload_temp_docs,
@@ -35,16 +34,10 @@ if not os.path.exists(SAVE_PATH_ROOT):
 
 def init_widgets():
     st.session_state.setdefault("history_len", Settings.model_settings.HISTORY_LEN)
-    st.session_state.setdefault("selected_kb", Settings.kb_settings.DEFAULT_KNOWLEDGE_BASE)
-    st.session_state.setdefault("kb_top_k", Settings.kb_settings.VECTOR_SEARCH_TOP_K)
-    st.session_state.setdefault("se_top_k", Settings.kb_settings.SEARCH_ENGINE_TOP_K)
-    st.session_state.setdefault("score_threshold", Settings.kb_settings.SCORE_THRESHOLD)
     st.session_state.setdefault("search_engine", Settings.kb_settings.DEFAULT_SEARCH_ENGINE)
-    st.session_state.setdefault("return_direct", False)
     st.session_state.setdefault("cur_conv_name", chat_box.cur_chat_name)
     st.session_state.setdefault("last_conv_name", chat_box.cur_chat_name)
     st.session_state.setdefault("file_chat_id", None)
-
 
 def pdf2txt(file_name):
     import pdfplumber
@@ -137,14 +130,6 @@ def agent_app_chat(api: ApiRequest):
             # )
             prompt_name="default"
             history_len = st.number_input("历史对话轮数：", 0, 20, key="history_len")
-            # kb_top_k = st.number_input("匹配知识条数：", 1, 20, key="kb_top_k")
-            # ## Bge 模型会超过1
-            # score_threshold = st.slider("知识匹配分数阈值：", 0.0, 2.0, step=0.01, key="score_threshold")
-            # return_direct = st.checkbox("仅返回检索结果", key="return_direct")
-            kb_top_k = 3
-            ## Bge 模型会超过1
-            score_threshold = 2
-            return_direct = False
 
             with placeholder.container():
                 # if dialogue_mode == "文件翻译生成":
@@ -319,11 +304,8 @@ def agent_app_chat(api: ApiRequest):
         chat_box.user_say(prompt)
 
         extra_body = dict(
-            top_k=kb_top_k,
-            score_threshold=score_threshold,
             temperature=ctx.get("temperature"),
             prompt_name=prompt_name,
-            return_direct=return_direct,
         )
 
         if dialogue_mode == "文件翻译生成":
@@ -375,5 +357,3 @@ def agent_app_chat(api: ApiRequest):
         mime="text/markdown",
         use_container_width=True,
     )
-
-    # st.write(chat_box.history)
